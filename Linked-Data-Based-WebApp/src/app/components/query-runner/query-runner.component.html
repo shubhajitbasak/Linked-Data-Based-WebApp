@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="columns">
+        <div class="column col-md-12 col-6 text-area">
+            <div class="form-group">
+                <label class="form-label" for="input-example-1">Endpoint :</label> {{endpoint}}
+                <label class="form-label" for="input-example-3">Query</label>
+                <textarea class="form-input ta-query" [(ngModel)]="query" placeholder="Query" rows="3" cols="30"></textarea>
+            </div>
+            <button class="btn" (click)="fetchData(query)">Fetch</button>
+        </div>
+        <div class="column col-6 "> 
+            <!-- <div *ngFor="let item of response.results.bindings">
+                 <div *ngFor="let variable of response.head.vars">
+                     {{item[variable].value}}
+                 </div>
+                <br>
+            </div> -->
+            <label class="form-label" for="input-example-1">JSON Data:</label>
+            <br>
+            {{response|json}}
+        </div>
+    </div>
+</div>

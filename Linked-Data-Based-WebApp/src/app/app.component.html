@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="columns">
+        <div class="column col-md-12 col-6">
+            <header class="navbar">
+                <section class="navbar-section">
+                    <a href="..." class="navbar-brand m-2 p-2">Linked Data Project - Nobel Prize Database</a>
+                </section>
+            </header>
+        </div>
+    </div>
+</div>
+<ul class="tab tab-block">
+        <li class="tab-item active">
+          <a href="#" (click)="activeTab='dashboard'" class="active">Dashboard</a>
+        </li>
+        <li class="tab-item">
+          <a href="#" (click)="activeTab='query-runner'" >Query Runner</a>
+        </li>
+</ul>
+<app-query-runner *ngIf="activeTab=='query-runner'"></app-query-runner>
+<app-dashboard *ngIf="activeTab=='dashboard'"></app-dashboard>

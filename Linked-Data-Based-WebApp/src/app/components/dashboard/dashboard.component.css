@@ -1,0 +1,96 @@
+.person-card>.card-image {
+    max-width: 100%;
+    height: 300px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(240, 238, 238);
+}
+
+.person-card>.card-image>img {
+    object-fit: fill;
+}
+
+.unlinked-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+
+.unlinked-data>.text {
+    font-size: 16px;
+    color: #908d8d;
+}
+
+.person-image:hover {
+    transform: scale(1.5);
+    transition: all ease .5s;
+}
+
+.person-image {
+    cursor: pointer;
+    transition: all ease 1s;
+}
+
+.text-flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.year-input>input {
+    border: none;
+}
+
+.year-input>input:hover {
+    border: .05rem solid #bcc3ce;
+}
+
+.motivation {
+    font-style: italic;
+    color: rgb(90, 97, 141);
+}
+
+.data-loading {
+    display: flex;
+    height: 51vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.toast {
+    position: absolute;
+    width: 300px;
+    right: 10px;
+    top: 10px;
+    z-index: 100;
+    opacity: 1;
+    transition: all .2s ease;
+}
+
+.hidden {
+    opacity: 0;
+    transform:translateX(300px);
+    transition: all .5s ease;
+}
+
+.card{
+    height:100%;
+}
+
+/* .server-setup{
+    position: sticky;
+    bottom:5px;
+    background:white;
+    opacity: 0.8;
+    transition:all 1s ease;
+
+}
+
+.server-setup:hover,.server-setup:active{
+    opacity:1;
+    transition:all 1s ease;
+} */

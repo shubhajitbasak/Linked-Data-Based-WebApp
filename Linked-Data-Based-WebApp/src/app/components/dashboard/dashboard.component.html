@@ -1,0 +1,176 @@
+<div class="toast toast-primary" [class.hidden]="!showToast"  [class.toast-error]="toastIsError">
+    <button class="btn btn-clear float-right" (click)="showToast=false"></button>
+    {{toastText}}
+</div>
+<div class="container">
+  <div class="columns">
+    <div class="column col-md-12 col-12 text-area">
+      <div class="form-group">
+        <div class="container">
+          <br>
+          <div class="columns">
+            <div class="column col-2">
+              <div class="columns">
+                <div class="column col-6">
+
+                  <div class="dropdown">
+                    <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+                      Category : <i class="icon icon-caret"></i>
+                    </a>
+                    <ul class="menu">
+                      <li *ngFor="let item of categories" class="menu-item">
+                        <a href="#" (click)="selected.category=item">{{item.label}}</a>
+                      </li>
+                    </ul>
+
+                  </div>
+                </div>
+                <div class="column col-6 text-flex-center">
+                  {{selected.category.label}}
+                </div>
+              </div>
+            </div>
+            <div class="column col-2">
+              <div class="columns">
+                <div class="col-6 text-flex-center">
+                  <span class="text-primary">Year :</span>
+                </div>
+                <div class="column col-6 year-input">
+                  <input class="form-input" type="number" placeholder="00" min="1895" max="2018"
+                    [(ngModel)]="selected.year">
+                </div>
+              </div>
+            </div>
+            <div class="column col-2">
+              <button class="btn" (click)="fetchData(selected)">Fetch</button>
+            </div>
+            <div class="column col-4 col-mx-auto">
+              <div class="container server-setup">
+                <div class="columns">
+                  <div class="col-12">
+                    <div class="input-group">
+                      <label class="form-switch">
+                        Local Server
+                        <input type="checkbox" (click)="toggleLocalData()">
+                        <i class="form-icon"></i>
+                      </label>
+                      <span class="input-group-addon">http://localhost:</span>
+                      <input type="text" class="form-input" placeholder="<port-number>" [(ngModel)]="localport"
+                        [disabled]="!getLocalData">
+                      <button class="btn btn-primary input-group-btn" (click)="updateLocalUrl(localport)"
+                        [disabled]="!getLocalData">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <br>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <br>
+  <div class="container">
+    <div class="columns">
+      <div class="column col-2 col-sm-6 col-mx-auto data-loading" *ngIf="data==null">
+        <div class="loading loading-lg"></div>
+      </div>
+      <div class="column col-2 col-sm-6 col-mx-auto" *ngIf="data != null && data.length==0">
+        <div class="unlinked-data">
+          <img src="assets/unlinked_data.png" [style.opacity]="0.1" class="img-responsive">
+          <br>
+          <span class="">That data seems unlinked !</span>
+        </div>
+      </div>
+      <div class="column col-xs-11 col-2 mb-2" *ngFor="let item of data">
+
+        <div class="card person-card">
+          <div class="card-image">
+            <img [src]="item.thumbnail?item.thumbnail:'assets/place_holder.jpg'" [style.opacity]="!item.thumbnail?0.2:1"
+              (click)="openLink(item.wikiLink)" class="img-responsive person-image">
+          </div>
+          <div class="card-header">
+            <div class="card-title h5">{{item.personName}}</div>
+            <div class="card-subtitle text-success">{{item.category}} - {{item.year}}</div>
+          </div>
+          <div class="card-body">
+            <div class="columns">
+              <div class="col-xs-12 motivation">
+                {{item.motivation}}
+              </div>
+            </div>
+            <br>
+            <div class="columns">
+              <div class="col-xs-12">
+                Born on : {{item.birthday}}
+              </div>
+              <div class="col-xs-12" *ngIf="item.nationality">
+                Nationality : {{item.nationality}}
+              </div>
+              <div class="col-xs-12" *ngIf="item.otherInfo">
+                Other Info : {{item.otherInfo}}
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="columns">
+              <div class="col-4">
+                <button class="btn btn-primary" (click)="openLink(item.wikiLink)"> Read More </button>
+              </div>
+              <div class="col-6"></div>
+              <div class="col-2">
+                <button class="btn btn-primary tooltip-bottom" [class.tooltip]="!getLocalData" 
+                 data-tooltip="Please start local server"
+                 (click)="editItem(item)" [disabled]="!getLocalData"> <i
+                    class='icon icon-edit'></i> </button>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <br>
+
+
+
+  <div class="modal modal-sm" [class.active]="editModal" id="modal-id">
+    <a href="#" class="modal-overlay" aria-label="Close"></a>
+    <div class="modal-container">
+      <div class="modal-header">
+        <a href="#close" class="btn btn-clear float-right" aria-label="Close" (click)="editModal=false"></a>
+        <div class="modal-title h5">Edit Details</div>
+      </div>
+      <div class="modal-body" *ngIf="editedItem">
+        <div class="content">
+          <div class="card-title h5">{{editedItem.personName}}</div>
+          <div class="card-subtitle text-success">{{editedItem.category}} - {{editedItem.year}}</div>
+          <br>
+          <div class="card-body">
+            <div class="form-group">
+              <label class="form-label" for="input-example-1">Nationality</label>
+              <input class="form-input" type="text" id="input-example-1" placeholder="Nationality"
+                [(ngModel)]="editedItem.nationality">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-example-1">Other Info</label>
+              <input class="form-input" type="text" id="input-example-1" placeholder="Other Info"
+                [(ngModel)]="editedItem.otherInfo">
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary input-group-btn" (click)="updateItem(editedItem)">Submit</button>
+        </div>
+      </div>
+    </div>
+
+    
